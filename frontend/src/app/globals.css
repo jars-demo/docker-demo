@@ -1,0 +1,410 @@
+@import 'tailwindcss';
+
+/* Docker without the magic: a harbour at night. Deep navy bands, cool grey-white decks, and one
+   signal orange for everything you can press. Each status colour has one meaning everywhere:
+   green passes or is cached, red fails, ochre is work that ran, blue is a layer. Every text pair
+   is checked for contrast in tests/unit/tokens.test.ts. */
+:root {
+  --canvas: #f2f4f6;
+  --surface: #ffffff;
+  --surface-2: #e6ebf0;
+  --ink: #0c1722;
+  --ink-2: #35475a;
+  --muted: #566779;
+  --rule: #d5dde5;
+  --rule-strong: #b3c0cc;
+  --navy: #0b2133;
+  --navy-2: #143149;
+  --navy-line: #27465f;
+  --deck: #0f2a40;
+  --deck-hot: #1a2f43;
+  --on-navy: #eef3f7;
+  --on-navy-muted: #a8bbcb;
+  --signal: #a83c06;
+  --signal-fill: #ff8a3d;
+  --signal-hover: #ffa366;
+  --pass: #1c6a3a;
+  --pass-wash: #e1f0e6;
+  --fail: #ad2418;
+  --fail-wash: #fbe5e2;
+  --work: #7d5600;
+  --work-wash: #f7eed8;
+  --layer: #1d5a85;
+  --layer-wash: #e2edf6;
+  --code-bg: #0a1824;
+  --code-ink: #e3ebf2;
+  --code-muted: #9cb0c2;
+  --code-pass: #8fd8a8;
+  --code-fail: #ff9b8f;
+  --code-rule: #1d3346;
+  --output-bg: #0f2232;
+  --shadow-card: 0 1px 0 rgb(12 23 34 / 0.04), 0 12px 28px -16px rgb(12 23 34 / 0.28);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-navy-line: var(--navy-line);
+  --color-deck: var(--deck);
+  --color-deck-hot: var(--deck-hot);
+  --color-on-navy: var(--on-navy);
+  --color-on-navy-muted: var(--on-navy-muted);
+  --color-signal: var(--signal);
+  --color-signal-fill: var(--signal-fill);
+  --color-signal-hover: var(--signal-hover);
+  --color-pass: var(--pass);
+  --color-pass-wash: var(--pass-wash);
+  --color-fail: var(--fail);
+  --color-fail-wash: var(--fail-wash);
+  --color-work: var(--work);
+  --color-work-wash: var(--work-wash);
+  --color-layer: var(--layer);
+  --color-layer-wash: var(--layer-wash);
+  --color-code-bg: var(--code-bg);
+  --color-code-ink: var(--code-ink);
+  --color-code-muted: var(--code-muted);
+  --color-code-pass: var(--code-pass);
+  --color-code-fail: var(--code-fail);
+  --color-code-rule: var(--code-rule);
+  --color-output-bg: var(--output-bg);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-redhat-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--signal-fill);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.on-navy :focus-visible {
+  outline-color: var(--signal-fill);
+}
+
+/* Headings: a compact grotesque, set slightly narrow, like stencilled freight lettering. */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 88%;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* A label above a heading: monospaced capitals after a small square, like a container code. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: currentColor;
+}
+
+.on-navy .eyebrow {
+  color: var(--signal-fill);
+}
+
+/* A plate: a white panel with a hairline and square corners, the site's one card shape. */
+.plate {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: var(--shadow-card);
+}
+
+.code {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  font-family: var(--font-mono);
+}
+
+code,
+pre,
+.code {
+  font-variant-ligatures: none;
+}
+
+/* The build simulator: a row settles in as it builds. */
+.row-in {
+  animation: row-in 280ms var(--ease) both;
+  animation-delay: var(--at, 0ms);
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
+.pip-wave {
+  animation: pip-wave 4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 20% 90%;
+}
+
+@keyframes pip-wave {
+  50% {
+    transform: rotate(-12deg);
+  }
+}
+
+.pip-blink {
+  animation: pip-blink 6s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes pip-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row-in,
+  .pip-wave,
+  .pip-blink {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Chapter prose. */
+.prose-dock {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.prose-dock h2 {
+  scroll-margin-top: 1.5rem;
+  margin: 3.25rem 0 0.75rem;
+  font-family: var(--font-display);
+  font-stretch: 88%;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.prose-dock h2 .anchor {
+  margin-left: 0.5rem;
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  text-decoration: none;
+  opacity: 0;
+}
+
+.prose-dock h2:hover .anchor,
+.prose-dock h2 .anchor:focus-visible {
+  opacity: 1;
+}
+
+/* On touch screens there is no hover to reveal the anchor, so leave it out. */
+@media (hover: none) {
+  .prose-dock h2 .anchor {
+    display: none;
+  }
+}
+
+.prose-dock h3 {
+  margin: 2.25rem 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.prose-dock p,
+.prose-dock ul,
+.prose-dock ol {
+  margin: 0.85rem 0;
+}
+
+.prose-dock ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose-dock ul > li {
+  position: relative;
+  padding-left: 1.35rem;
+  margin: 0.45rem 0;
+}
+
+.prose-dock ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0.15rem;
+  top: 0.68em;
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--layer);
+}
+
+.prose-dock ol {
+  padding-left: 1.6rem;
+}
+
+.prose-dock ol > li {
+  margin: 0.45rem 0;
+  padding-left: 0.25rem;
+}
+
+.prose-dock ol > li::marker {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--signal);
+}
+
+.prose-dock a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--signal-fill);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.prose-dock strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.prose-dock blockquote {
+  margin: 1.5rem 0;
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  border-left: 3px solid var(--layer);
+}
+
+.prose-dock :not(pre) > code {
+  padding: 0.08rem 0.32rem;
+  border-radius: 3px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.prose-dock .code-block {
+  margin: 1.4rem 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--code-bg);
+}
+
+.prose-dock .code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.3rem 0.25rem 0.95rem;
+  border-bottom: 1px solid var(--code-rule);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--code-muted);
+}
+
+.prose-dock .code-block pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 0.9rem 1rem 1rem;
+  color: var(--code-ink);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.prose-dock .code-block.is-output {
+  background: var(--output-bg);
+}
+
+.prose-dock .table-wrap {
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.prose-dock table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.prose-dock th,
+.prose-dock td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose-dock th {
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+@media (max-width: 480px) {
+  .prose-dock {
+    font-size: 17px;
+  }
+
+  .prose-dock .code-block pre {
+    font-size: 12px;
+  }
+}
