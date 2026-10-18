@@ -84,10 +84,9 @@ class Container:
             command = line.removeprefix("exec ").strip()
             if replace:  # exec: the shell becomes the program, keeping its PID
                 shell.command = command
-                process = shell
-            else:  # no exec: the shell starts a child and waits for it
-                process = self.spawn(command)
-            self.start(process)
+                self.start(shell)
+                break  # the shell is gone, so the rest of the script never runs
+            self.start(self.spawn(command))  # no exec: the shell starts a child and waits
 
     def start(self, process: Process) -> None:
         self.say(f"PID {process.pid}  {process.command}")

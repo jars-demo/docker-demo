@@ -1,4 +1,4 @@
-"""Case 01: the two-minute rebuild.
+"""Case 01: the rebuild that reinstalled everything.
 
 Tidepool Tea sells loose-leaf tea online. The orders service ships as an image built from the
 Dockerfile below. Change one price in app.py and the rebuild should take a second. Instead it

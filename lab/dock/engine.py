@@ -209,12 +209,17 @@ class Builder:
             op = op.upper()
             if op == "FROM":
                 base, _, name = arg.partition(" AS ")
-                if base not in BASES:
-                    raise BuildError(f"FROM {base}: no such base image in this pretend registry")
                 if stage is not None:
                     stages[stage.name] = stage
+                name = name.strip() or str(len(stages))
+                if base in stages:  # FROM an earlier stage carries on from where it ended
+                    stage = self.restore(stages[base], name)
+                    steps.append(Step(line, True, 0.0))
+                    continue
+                if base not in BASES:
+                    raise BuildError(f"FROM {base}: no such base image in this pretend registry")
                 key = hashlib.sha256(base.encode()).hexdigest()
-                stage = Stage(base, name.strip() or str(len(stages)))
+                stage = Stage(base, name)
                 steps.append(Step(line, True, 0.0))
                 continue
             if stage is None:
