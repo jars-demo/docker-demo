@@ -2,7 +2,7 @@
 
 In production the orders container is limited to 2 CPUs and 1 GB of memory. gunicorn sizes its
 worker pool with the usual rule, two workers per CPU plus one. The container keeps being killed
-a few seconds after it starts, with exit code 137 and OOMKilled: true.
+a few seconds after it starts, with exit code 137.
 Run it: uv run python -m dock run 9
 """
 
@@ -87,4 +87,4 @@ def run() -> None:
     if oom_at:
         limit = memory_limit_mb(PRODUCTION)
         print(f"worker {oom_at} took memory to {used:.0f} MB, over the {limit:.0f} MB limit")
-        print("the kernel kills the container: OOMKilled true, exit code 137")
+        print("the kernel's OOM killer steps in: SIGKILL, exit code 137 (128 + 9)")

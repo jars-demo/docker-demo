@@ -91,8 +91,8 @@ def context() -> None:
             seconds = timed(lambda names=names: pack(root, names))
             print(f"  {label:<24}{len(names):>8}{size / 1e6:>9.1f} MB{seconds * 1e3:>12.0f} ms")
     print()
-    print(".dockerignore here: .git, node_modules, data. The client sends this tar on every build,")
-    print("and COPY . . hashes all of it to decide whether the cache still holds.")
+    print(".dockerignore here: .git, node_modules, data. The classic builder sends the whole tar")
+    print("on every build. BuildKit sends files as COPY asks for them, and COPY . . asks for all.")
 
 
 # digest
