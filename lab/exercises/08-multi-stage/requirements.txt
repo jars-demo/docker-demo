@@ -1,0 +1,4 @@
+# psycopg's C build compiles against the system libpq, so it picks up libpq security fixes
+# from the operating system. It needs a compiler and libpq's headers to build.
+psycopg==3.3.6
+psycopg-c==3.3.6

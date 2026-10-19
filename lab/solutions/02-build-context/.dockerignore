@@ -1,0 +1,12 @@
+# Secrets never go into the build context. The container gets them at run time.
+.env
+.env.*
+
+# Test data, tests and tooling the server does not need at run time.
+testdata/
+tests/
+.git/
+__pycache__/
+*.pyc
+Dockerfile
+.dockerignore

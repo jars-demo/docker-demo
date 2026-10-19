@@ -1,7 +1,7 @@
 [project]
 name = "docker-lab"
 version = "0.1.0"
-description = "Docker without the magic: nine real container bugs in one small tea shop."
+description = "Docker, from first container to production: twelve exercises on real Docker."
 license = "MIT"
 requires-python = ">=3.13"
 dependencies = []
@@ -23,3 +23,7 @@ target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"exercises/**" = ["E402"]
+"solutions/**" = ["E402"]
