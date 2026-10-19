@@ -4,49 +4,42 @@ Guidance for AI coding agents and developers. Humans: start with [README.md](REA
 
 ## What this is
 
-"Docker without the magic": nine chapters, each a container idea explained in depth and a real bug
-in the orders service of a small tea shop that shows it. `lab/` holds the cases and the checker;
+"Docker, from first container to production": twelve chapters, each a Docker idea explained in
+depth, with an exercise that runs on real Docker. `lab/` holds the exercises and the checker;
 `workshop/` the chapters; `frontend/` the site.
 
 ## Map
 
 ```text
-lab/cases/caseNN_*.py       one deliberate container bug each; run() shows the symptom
-lab/dock/engine.py          a pretend builder: layers, whiteouts, build cache, stages, apt, pip
-lab/dock/checks.py          check_NN(module) -> [(label, ok)]; tests the job as well as the bug
-lab/dock/experiments.py     `dock try context | digest | ports | stop`, all measured live
-lab/dock/__main__.py        CLI: list, run, check, hint, try; case titles and hints live here
-lab/tests/                  cases fail as shipped, pass with solutions/, reject wrong fixes,
-                            and match the output quoted in the chapters
-frontend/src/lib/site.ts    cases and measured numbers: every value is real lab output
-frontend/src/lib/buildcache.ts  the build simulator's rules, unit tested against chapter 01
-frontend/src/lib/pip.ts     Pip's note and quiz for each page
+lab/exercises/NN-*/         what the learner edits: Dockerfiles, compose.yaml, scripts, small apps
+lab/solutions/NN-*/         only the files that change; copied over an exercise, it passes
+lab/dock/exNN.py            TITLE, HINTS, run(path) shows the symptom, check(path) -> [(label, ok)]
+lab/dock/docker.py          docker CLI helpers: build log parsing, layer scanning, cleanup
+lab/dock/experiments.py     `dock try startup | layers | sizes | network`, all measured live
+lab/tests/                  shipped fails, solved passes, wrong fixes fail, other real fixes pass
+frontend/src/lib/site.ts    symptoms and measured numbers: each one is real lab output
+frontend/src/lib/cache.ts   the build cache simulator's rules, unit tested
+frontend/src/lib/quiz.ts    two questions per chapter
 frontend/src/lib/tokens.ts  colour pairs; a test checks them against globals.css and WCAG AA
 ```
 
 ## Commands
 
 ```bash
-cd lab && uv sync && uv run pytest && uv run ruff check . && uv run ruff format --check .
+cd lab && uv sync && uv run pytest && uv run ruff check .   # needs Docker running
 cd frontend && npm ci && npm run verify
-cd frontend && npm run build && npx next start -p 3114   # then, in another shell:
-cd frontend && E2E_BASE_URL=http://localhost:3114 npm run test:e2e
 ```
-
-Set `CHROMIUM_PATH` to use an already installed Chromium for the browser tests.
 
 ## Rules
 
-1. **The bugs are the product.** Never fix a bug in `lab/cases/`. Change a case, its check, its
-   solution and its chapter together, and keep `test_case_is_broken_as_shipped` passing.
-2. **Checks test the job.** A lazy fix (run as root, skip the install, hard-code a number) must
-   fail. Add it to `WRONG` in `lab/tests/test_mutations.py`, and add other right fixes to `RIGHT`.
-3. **Bugs must be deterministic.** Pretend clocks, a pretend kernel and pretend builds, never real
-   timing or a Docker daemon on the core path.
-4. **Standard library only** in `lab/`.
-5. **Every number is real.** Output and timings in chapters and on the site come from real runs.
-   `lab/tests/test_chapters.py` and `frontend/tests/unit/site.test.ts` compare them.
-6. **Colours mean one thing.** Green passes or is cached, red fails, ochre is work that ran, blue
-   is a layer, orange is something you can press. Status always has an icon and text too.
-7. **Writing style.** Plain English, short sentences, no em dashes. Conventional Commits, no AI
+1. **The bugs are the product.** Never fix an exercise. Change an exercise, its check and its
+   solution together, and keep the tests passing.
+2. **Real Docker only.** Checks build and run real images and containers. No simulations in `lab/`.
+3. **Checks test the goal, not the symptom.** Each one must reject the fix that only hides the
+   problem; add it to `tests/test_wrong_fixes.py`.
+4. **Only touch what the lab made.** Every name starts with `dockerlab` and carries the label
+   `dockerlab=1`. Never prune or remove anything else.
+5. **Every number is real.** Output in chapters and on the site comes from real runs, and unit
+   tests compare the site's numbers with the chapters.
+6. **Writing style.** Plain English, short sentences, no em dashes. Conventional Commits, no AI
    attribution trailers.
