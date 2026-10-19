@@ -2,7 +2,7 @@
   "name": "docker-demo-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "The site for Docker without the magic.",
+  "description": "The site for Docker, from first container to production.",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",

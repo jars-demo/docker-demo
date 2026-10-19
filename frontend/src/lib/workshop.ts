@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
+import { levelOf, type Level } from './site'
+
 // Workshop chapters live in workshop/NN-slug.md (the source of truth). They are read once at
 // module scope, so every chapter page can be prerendered.
 
@@ -10,6 +12,7 @@ export type Chapter = {
   title: string
   summary: string
   minutes: number
+  level: Level
   body: string
 }
 
@@ -23,13 +26,13 @@ function parse(file: string): Chapter {
   const lines = raw.split('\n')
   const title = (lines.find((l) => l.startsWith('# ')) ?? `# ${slug}`).slice(2).trim()
   const summary = (lines.find((l) => l.startsWith('> ')) ?? '> ').slice(2).trim()
-  const minutes = Number(/(\d+)\s*minutes/i.exec(raw)?.[1] ?? 10)
+  const minutes = Number(/^\*\*Time:\*\* (\d+) minutes/m.exec(raw)?.[1] ?? 0)
   const body = lines
     // The title, summary and time are shown in the page header, so they are left out of the body.
     .filter((l) => !l.startsWith('# ') && l !== `> ${summary}` && !l.startsWith('**Time:**'))
     .join('\n')
     .trim()
-  return { slug, number, title, summary, minutes, body }
+  return { slug, number, title, summary, minutes, level: levelOf(Number(number)), body }
 }
 
 export const CHAPTERS: Chapter[] = fs

@@ -4,15 +4,17 @@ import remarkGfm from 'remark-gfm'
 
 import { CopyButton } from './CopyButton'
 
-// A chapter body rendered like a README: code blocks with a header bar, tables that scroll on
-// their own on a phone, and headings you can link to.
+// A chapter body rendered like good documentation: code blocks with a labelled header and a copy
+// button, tables that scroll on their own on a phone, and headings you can link to.
 
 const LABELS: Record<string, string> = {
   bash: 'shell',
   text: 'output',
   python: 'python',
-  dockerfile: 'dockerfile',
-  yaml: 'compose',
+  dockerfile: 'Dockerfile',
+  yaml: 'compose.yaml',
+  sql: 'sql',
+  json: 'json',
 }
 
 function textOf(node: ReactNode): string {

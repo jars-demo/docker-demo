@@ -2,8 +2,7 @@
 
 import { useSyncExternalStore } from 'react'
 
-// A small button that appears after scrolling down and returns to the top. Companion places it
-// in the same corner row as Pip, so the two never overlap.
+// A small button that appears after scrolling down and returns to the top.
 
 function subscribe(onChange: () => void) {
   window.addEventListener('scroll', onChange, { passive: true })
@@ -26,7 +25,7 @@ export function BackToTop() {
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
       }}
-      className={`grid size-12 place-items-center rounded-[4px] border border-rule-strong bg-surface text-ink-2 shadow-[var(--shadow-card)] transition-opacity duration-200 hover:border-signal hover:text-ink motion-reduce:transition-none ${
+      className={`grid size-11 place-items-center rounded-full border border-rule-strong bg-surface text-ink-2 shadow-[var(--shadow-card)] transition-opacity duration-200 hover:border-blue hover:text-blue-text ${
         visible ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >
